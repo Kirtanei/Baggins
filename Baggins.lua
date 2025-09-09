@@ -2507,10 +2507,18 @@ do
     end
 
     local function BagginsItemButton_PreClick(button)
-        BagginsItemButton_AutoReagent(button, GetMouseButtonClicked())
-        if GetMouseButtonClicked() == "RightButton" and button.tainted then
-            print("|cff00cc00Baggins: |cffffff00Right-clicking this button will not work until you leave combat|r")
+        if button.tainted then
+            if GetMouseButtonClicked() == "RightButton" then
+                print("|cff00cc00Baggins: |cffffff00Right-clicking this button will not work until you leave combat|r")
+            end
+            button.origOnClick = button:GetScript("OnClick")
+            button:SetScript("OnClick", function(self)
+                self:SetScript("OnClick", self.origOnClick)
+                self.origOnClick = nil
+            end)
+            return
         end
+        BagginsItemButton_AutoReagent(button, GetMouseButtonClicked())
         for _, v in ipairs(button.slots) do
             local bag, slot = GetSlotInfo(v)
             local itemInfo = GetContainerItemInfo(bag, slot)

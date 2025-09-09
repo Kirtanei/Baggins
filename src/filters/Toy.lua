@@ -7,15 +7,18 @@ Toy.lua
 local AddOnName, _ = ...
 local AddOn = _G[AddOnName]
 
-local C_TooltipInfoGetBagItem = C_TooltipInfo.GetBagItem
-local TooltipUtil = TooltipUtil
+local C_TooltipInfoGetBagItem = C_TooltipInfo and C_TooltipInfo.GetBagItem
+local TooltipUtil = TooltipUtil and TooltipUtil
 
 local function Matches(bag, slot, _)
+    if not C_TooltipInfoGetBagItem then return false end
     local tooltipData = C_TooltipInfoGetBagItem(bag, slot)
     if not tooltipData then return false end
-    TooltipUtil.SurfaceArgs(tooltipData)
-    for _, line in ipairs(tooltipData.lines) do
-        TooltipUtil.SurfaceArgs(line)
+    if TooltipUtil and TooltipUtil.SurfaceArgs then
+        TooltipUtil.SurfaceArgs(tooltipData)
+        for _, line in ipairs(tooltipData.lines) do
+            TooltipUtil.SurfaceArgs(line)
+        end
     end
 
     -- The above SurfaceArgs calls are required to assign values to the
