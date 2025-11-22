@@ -4123,7 +4123,11 @@ end
 
 function Baggins:MainMenuBarBackpackButtonOnClick(button)
     if IsAltKeyDown() then
-        BackpackButton_OnClick(button)
+        if self:IsHooked("ToggleBackpack") then
+            self.hooks.ToggleBackpack(button)
+        else
+            BackpackButton_OnClick(button)
+        end
     else
         self:ToggleAllBags()
         --button:SetChecked(false)
