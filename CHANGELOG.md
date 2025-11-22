@@ -5,3 +5,4 @@
 
 - [Baggins] Handle Missing Frame in ReallyUpdateBags
 - [Baggins] Guard Toy filter SurfaceArgs calls
+- [Baggins] Prevent taint error when right-clicking items created during combat
