@@ -13,10 +13,11 @@ local TooltipUtil = TooltipUtil
 local function Matches(bag, slot, _)
     local tooltipData = C_TooltipInfoGetBagItem(bag, slot)
     if not tooltipData then return false end
-    if TooltipUtil and TooltipUtil.SurfaceArgs then
-        TooltipUtil.SurfaceArgs(tooltipData)
+    local surfaceArgs = TooltipUtil and TooltipUtil.SurfaceArgs
+    if type(surfaceArgs) == "function" then
+        surfaceArgs(tooltipData)
         for _, line in ipairs(tooltipData.lines) do
-            TooltipUtil.SurfaceArgs(line)
+            surfaceArgs(line)
         end
     end
 
